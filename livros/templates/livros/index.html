@@ -1,0 +1,68 @@
+{% extends 'livros/layout.html'%}
+
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-warning text-white">
+        Livros
+        <a href="{% url 'cadastro_livro' %}">
+            <img src="{% static 'livros/imagens/adicionar.png' %}" style="margin-left:auto;margin-right:0px;float:right;" alt="Adicionar" title="Adicionar">
+        </a>
+    </div>
+    <div class="card-body" style="padding:0px;">
+        <table class="table table-hover" style="margin:0px;">
+            <thead>
+                <tr>
+                    <th>
+                        Título
+                    </th>
+                    <th>
+                        Autor
+                    </th>
+                    <th>
+                        Gênero
+                    </th>
+                    <th style="text-align:center;">
+                        Detalhes
+                    </th>
+                    <th style="text-align:center;">
+                        Editar
+                    </th>
+                    <th style="text-align:center;">
+                        Remover
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro in livros  %}
+                <tr>
+                    <td>
+                        {{livro.titulo}}
+                    </td>
+                    <td>
+                        {{livro.autor.nome}}
+                    </td>
+                    <td>
+                        {{livro.genero.nome}}
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="{% static 'livros/imagens/visualizar.png' %}" style="cursor:pointer;" onclick="obterLivro({{livro.id}})">
+                    </td>
+                    <td style="text-align:center;">
+                        <a href="{% url 'obter_livro' id_livro=livro.id %}">
+                            <img src="{% static 'livros/imagens/atualizar.png' %}" style="cursor:pointer;">
+                        </a>
+                    </td>
+                    <td style="text-align:center;">
+                        <a href="{% url 'remover_livro' id_livro=livro.id %}">
+                            <img src="{% static 'livros/imagens/remover.png' %}" style="cursor:pointer;" onclick="return confirm('Deseja realmente excluir o livro {{livro.titulo}}?')">
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

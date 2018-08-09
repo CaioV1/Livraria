@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        {% load static %}
+        <link type="text/css" rel="stylesheet" href="{% static 'livros/bootstrap.css' %}">
+        <link type="text/css" rel="stylesheet" href="{% static 'livros/bootstrap.min.css' %}">
+        <title>{{titulo_pagina}}</title>
+        <script src="{% static 'livros/modal.js' %}"></script>
+        <script src="{% static 'livros/jquery-3.3.1.min.js' %}"></script>
+        <script>
+
+            function obterLivro(id){
+
+                $.post("{% url 'visualizar_livro' %}", {"id_livro":id}).done(function(dados){
+
+                    console.log(dados[0]["autor"]);
+
+                    var livro = dados[0];
+
+                    $("#txt_titulo").html(livro["titulo"]);
+                    $("#txt_data").html(livro["data_lancamento"]);
+                    $("#txt_autor").html(livro["autor"]);
+                    $("#txt_editora").html(livro["editora"]);
+                    $("#txt_genero").html(livro["genero"]);
+                    $("#txt_sinopse").html(livro["sinopse"]);
+
+                    abrirModal();
+
+                });
+
+            }
+
+        </script>
+    </head>
+    <body>
+        <div id="modal_visualizar">
+            <div id="visualizar_conteudo">
+                <span id="close" onclick="fecharModal()">&times;</span>
+                <div class="container" style="padding-top:50px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>Título</h3>
+                            <p style="font-size:18px;" id="txt_titulo">O Iluminado</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h3>Data de Lançamento</h3>
+                            <p style="font-size:18px;" id="txt_data">20/03/1986</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h3>Autor</h3>
+                            <p style="font-size:18px;" id="txt_autor">Stephen King</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Editora</h3>
+                            <p style="font-size:18px;" id="txt_editora">Suma de Letras</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Gênero</h3>
+                            <p style="font-size:18px;" id="txt_genero">Suspense</p>
+                        </div>
+                    </div>
+                    <h3>Sinopse</h3>
+                    <p style="font-size:18px;" id="txt_sinopse">Jack Torrence consegue um emprego de zelador em um velho hotel, e acha que será a solução dos problemas de sua família: não vão mais passar por dificuldades, sua esposa não vai mais sofrer e seu filho, Danny, vai poder ter ar puro para se livrar de estranhas convulsões. Mas as coisas não são tão perfeitas como parecem: existem forças malignas rondando os antigos corredores. O hotel é uma chaga aberta de ressentimento e desejo de vingança, e, inevitavelmente, um embate entre o bem e o mal terá de ser travado.</p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="card" style="width:202px;">
+                        <img src="{% static 'livros/imagens/img_avatar5.png' %}" style="height:200px;width:200px;" class="card-img-top" alt="Imagem de Perfil">
+                        <div class="card-header bg-primary text-white" style="font-size:20px;">Adriana Moreira</div>
+                        <div class="card-body" style="padding-bottom:0px;">
+                            <p class="card-text">
+                                <strong>Data de Nascimento</strong><br>08/10/1980<br><br>
+                                <strong>Gênero Preferido</strong><br>Terror<br><br>
+                                <strong>Autor Preferido</strong><br>Stephen King<br><br>
+                                <strong>Livro Preferido</strong><br>O Iluminado<br><br>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card" style="width:202px;margin-top:10px;">
+                        <div class="card-header bg-primary text-white">Menu</div>
+                        <div class="card-body" style="padding:0px;">
+                            <table class="table table-hover" style="margin:0px;">
+                                <tbody>
+                                    <tr><td><a href="{% url 'index' %}">Livros</a></td></tr>
+                                    <tr><td><a href="{% url 'autores' %}">Autores</a></td></tr>
+                                    <tr><td><a href="#">Editoras</a></td></tr>
+                                    <tr><td><a href="#">Gêneros</a></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10" style="margin-right:0px;">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
