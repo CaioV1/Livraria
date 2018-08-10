@@ -1,0 +1,29 @@
+{% extends 'livros/layout.html'%}
+
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-success text-white">
+        {{titulo_pagina}}
+    </div>
+    <div class="card-body" style="padding:0px;">
+        <form method="get" action="{% url 'salvar_editora' %}">
+            <div class="row">
+                <div class="col-md-7" style="margin:20px;">
+                    <label for="txt_nome" style="font-weight:bold;font-size:20px;">Nome</label>
+                    <input type="text" name="txt_nome" class="form-control" id="txt_nome" value="{{editora.nome}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="margin:20px;">
+                    <input type="submit" name="btn_salvar" class="btn btn-success" value="{{modo}}">
+                    <a href="{% url 'editoras' %}">
+                        <input type="button" name="btn_cancelar" class="btn btn-danger" value="Cancelar">
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

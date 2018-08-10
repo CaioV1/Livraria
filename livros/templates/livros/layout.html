@@ -5,6 +5,7 @@
         {% load static %}
         <link type="text/css" rel="stylesheet" href="{% static 'livros/bootstrap.css' %}">
         <link type="text/css" rel="stylesheet" href="{% static 'livros/bootstrap.min.css' %}">
+        <link rel="icon" href="{% static 'livros/imagens/icon.png' %}">
         <title>{{titulo_pagina}}</title>
         <script src="{% static 'livros/modal.js' %}"></script>
         <script src="{% static 'livros/jquery-3.3.1.min.js' %}"></script>
@@ -89,8 +90,8 @@
                                 <tbody>
                                     <tr><td><a href="{% url 'index' %}">Livros</a></td></tr>
                                     <tr><td><a href="{% url 'autores' %}">Autores</a></td></tr>
-                                    <tr><td><a href="#">Editoras</a></td></tr>
-                                    <tr><td><a href="#">Gêneros</a></td></tr>
+                                    <tr><td><a href="{% url 'editoras' %}">Editoras</a></td></tr>
+                                    <tr><td><a href="{% url 'generos' %}">Gêneros</a></td></tr>
                                 </tbody>
                             </table>
                         </div>

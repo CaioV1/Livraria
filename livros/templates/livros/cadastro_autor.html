@@ -5,29 +5,33 @@
 {% block content %}
 <div class="card">
     <div class="card-header bg-success text-white">
+        {{titulo_pagina}}
     </div>
     <div class="card-body" style="padding:0px;">
-        <form method="get" action="{% url 'salvar_livro' %}">
+        <form method="get" action="{% url 'salvar_autor' %}">
             <div class="row">
                 <div class="col-md-7" style="margin:20px;">
-                    <label for="txt_titulo" style="font-weight:bold;font-size:20px;">Titulo</label>
-                    <input type="text" name="txt_titulo" class="form-control" id="txt_titulo" value="{{livros.titulo}}">
+                    <label for="txt_nome" style="font-weight:bold;font-size:20px;">Nome</label>
+                    <input type="text" name="txt_nome" class="form-control" id="txt_nome" value="{{autor.nome}}">
                 </div>
                 <div class="col-md-4" style="margin:20px;">
                     <label for="txt_data" style="font-weight:bold;font-size:20px;">Data de Lançamento</label>
-                    <input type="date" name="txt_data" class="form-control" id="txt_data" value="{{livros.data_lancamento|date:'Y-m-d'}}">
+                    <input type="date" name="txt_data" class="form-control" id="txt_data" value="{{autor.data_nascimento|date:'Y-m-d'}}">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-11" style="margin:20px;">
-                    <label for="txt_sinopse" style="font-weight:bold;font-size:20px;">Sinopse</label>
-                    <textarea name="txt_sinopse" class="form-control" id="txt_sinopse" rows="8" cols="80">{{livros.sinopse}}</textarea>
+                    <select class="form-control" name="slt_paises">
+                        {% for pais in paises %}
+                        <option value="{{pais.nome_pais}}" {% if pais.nome_pais == autor.pais_origem %} {{"selected"}} {% endif %}>{{pais.nome_pais}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12" style="margin:20px;">
                     <input type="submit" name="btn_salvar" class="btn btn-success" value="{{modo}}">
-                    <a href="{% url 'index' %}">
+                    <a href="{% url 'autores' %}">
                         <input type="button" name="btn_cancelar" class="btn btn-danger" value="Cancelar">
                     </a>
                 </div>

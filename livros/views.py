@@ -6,6 +6,8 @@ from .models import Livro
 from .models import Autor
 from .models import Editora
 from .models import Genero
+import json
+import os
 
 #CRUD Livros#############################################################################
 
@@ -145,3 +147,251 @@ def autores(request):
     }
 
     return render(request, 'livros/autores.html', context)
+
+def cadastro_autor(request):
+
+    caminho = os.path.dirname(__file__)
+    caminho += "\\static\\livros\\"
+    caminhoJSON = os.path.join(caminho, "paises.json")
+
+    #print(caminho)
+
+    with open(caminhoJSON, encoding="utf-8") as file:
+
+        dados = json.load(file)
+
+    context = {
+
+        "titulo_pagina": "Cadastro de Autor",
+        "modo": "Cadastrar",
+        "paises": dados
+
+    }
+
+    request.session["modo"] = "Inserir"
+
+    return render(request, "livros/cadastro_autor.html", context)
+
+def salvar_autor(request):
+
+    print(request.session["modo"])
+
+    if(request.session["modo"] == "Atualizar"):
+
+        Autor.objects.filter(id=request.session["id_autor"]).update(
+
+            nome = request.GET.get("txt_nome"),
+            data_nascimento = request.GET.get("txt_data"),
+            pais_origem = request.GET.get("slt_paises")
+
+        )
+
+    else:
+
+        Autor(
+
+            nome = request.GET.get("txt_nome"),
+            data_nascimento = request.GET.get("txt_data"),
+            pais_origem = request.GET.get("slt_paises")
+
+        ).save()
+
+    context = {"autores":Autor.objects.all()}
+
+    return render(request, "livros/autores.html", context)
+
+def remover_autor(request, id_autor):
+
+    Autor.objects.filter(id=id_autor).delete()
+
+    context = {"autores":Autor.objects.all()}
+
+    return render(request, "livros/autores.html", context)
+
+def obter_autor(request, id_autor):
+
+    autor = Autor.objects.filter(id=id_autor)
+
+    caminho = os.path.dirname(__file__)
+    caminho += "\\static\\livros\\"
+    caminhoJSON = os.path.join(caminho, "paises.json")
+
+    #print(caminho)
+
+    with open(caminhoJSON, encoding="utf-8") as file:
+
+        dados = json.load(file)
+
+    context = {
+
+        "autor": autor[0],
+        "titulo_pagina": "Atualização de Autor",
+        "modo": "Atualizar",
+        "paises": dados
+
+    }
+
+    request.session["modo"] = "Atualizar"
+    request.session["id_autor"] = id_autor
+
+    print(context["autor"])
+
+    return render(request, "livros/cadastro_autor.html", context)
+
+#CRUD Editoras #####################################################################################
+
+def editoras(request):
+
+    context = {
+
+        "editoras": Editora.objects.all(),
+        "titulo_pagina": "Editoras"
+
+    }
+
+    return render(request, "livros/editoras.html", context)
+
+def cadastro_editora(request):
+
+    context = {
+
+        "titulo_pagina": "Cadastro de Editora",
+        "modo": "Cadastrar"
+
+    }
+
+    request.session["modo"] = "Inserir"
+
+    return render(request, "livros/cadastro_editora.html", context)
+
+def salvar_editora(request):
+
+    if(request.session["modo"] == "Atualizar"):
+
+        Editora.objects.filter(id=request.session["id_editora"]).update(
+
+            nome = request.GET.get("txt_nome")
+
+        )
+
+    else:
+
+        Editora(nome = request.GET.get("txt_nome")).save()
+
+    context = {
+
+        "editoras": Editora.objects.all(),
+        "titulo_pagina": "Editoras"
+
+    }
+
+    return render(request, "livros/editoras.html", context)
+
+def remover_editora(request, id_editora):
+
+    Editora.objects.filter(id=id_editora).delete()
+
+    context = {
+
+        "editoras": Editora.objects.all(),
+        "titulo_pagina": "Editoras"
+
+    }
+
+    return render(request, "livros/editoras.html", context)
+
+def obter_editora(request, id_editora):
+
+    editora = Editora.objects.filter(id=id_editora)
+
+    context = {
+
+        "editora": editora[0],
+        "titulo_pagina": "Atualização de Editora",
+        "modo": "Atualizar"
+
+    }
+
+    request.session["modo"] = "Atualizar"
+    request.session["id_editora"] = id_editora
+
+    return render(request, "livros/cadastro_editora.html", context)
+
+#CRUD Gêneros #####################################################################################
+
+def generos(request):
+
+    context = {
+
+        "generos": Genero.objects.all(),
+        "titulo_pagina": "Gêneros"
+
+    }
+
+    return render(request, "livros/generos.html", context)
+
+def cadastro_genero(request):
+
+    context = {
+
+        "titulo_pagina": "Cadastro de Gênero",
+        "modo": "Cadastrar"
+
+    }
+
+    request.session["modo"] = "Inserir"
+
+    return render(request, "livros/cadastro_genero.html", context)
+
+def salvar_genero(request):
+
+    if(request.session["modo"] == "Atualizar"):
+
+        Genero.objects.filter(id=request.session["id_genero"]).update(
+
+            nome = request.GET.get("txt_nome")
+
+        )
+
+    else:
+
+        Genero(nome = request.GET.get("txt_nome")).save()
+
+    context = {
+
+        "generos": Genero.objects.all(),
+        "titulo_pagina": "Gêneros"
+
+    }
+
+    return render(request, "livros/generos.html", context)
+
+def remover_genero(request, id_genero):
+
+    Genero.objects.filter(id=id_genero).delete()
+
+    context = {
+
+        "generos": Genero.objects.all(),
+        "titulo_pagina": "Gêneros"
+
+    }
+
+    return render(request, "livros/generos.html", context)
+
+def obter_genero(request, id_genero):
+
+    genero = Genero.objects.filter(id=id_genero)
+
+    context = {
+
+        "genero": genero[0],
+        "titulo_pagina": "Atualização de Gênero",
+        "modo": "Atualizar"
+
+    }
+
+    request.session["modo"] = "Atualizar"
+    request.session["id_genero"] = id_genero
+
+    return render(request, "livros/cadastro_genero.html", context)
